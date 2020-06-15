@@ -1,0 +1,23 @@
+resources:
+  - name: k8sRepo
+    type: GitRepo
+    configuration:
+      gitProvider: gh_jatin
+      path: jatindogra/k8s-pipelines
+      branches:
+        include: master
+
+pipelines:
+  - name: k8s_demo
+    steps:
+      - name: k8s_step
+        type: Bash
+        configuration:
+          nodePool: k8sPool
+          inputResources:
+            - name: k8sRepo
+        execution:
+          onExecute:
+            - echo "Hello from Kubernetes!"
+            - echo $res_k8sRepo_commitSha
+            - docker ps
