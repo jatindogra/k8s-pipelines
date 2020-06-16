@@ -19,5 +19,6 @@ pipelines:
         execution:
           onExecute:
             - echo "Hello from Kubernetes!"
+            - curl ifconfig.me
             - echo $res_k8sRepo_commitSha
             - docker ps
