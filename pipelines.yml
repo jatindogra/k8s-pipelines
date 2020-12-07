@@ -1,11 +1,18 @@
-# resources:
-#   - name: jatin_gitrepo2
-#     type: GitRepo
-#     configuration:
-#       gitProvider: jatin_gh
-#       path: jatindogra/pipelines
-#       branches:
-#        include: ^master$
+resources:
+  - name: jatin_gitrepo2
+    type: GitRepo
+    configuration:
+      gitProvider: jatin_gh
+      path: jatindogra/pipelines
+      branches:
+       include: ^master$
+  - name: jatin_image
+    type:      Image
+    configuration:
+      registry: jatin
+      sourceRepository: jatinart  # required if registry is Artifactory
+      imageName: jatinimage
+      imageTag: 1.0.0
 # pipelines:
 #   - name: jatin_custom_pipelines
 #     steps:
@@ -69,18 +76,17 @@
 #       interval: '*/10 * * * *'
 
 pipelines:
-  - name: load_pipeline_1
+  - name: load_pipeline
     steps:   
       - name: load_pipelines_test1
         type: Bash
-#         configuration:
-#           inputResources:
-#             - name: load_azure
-              
+        configuration:
+          inputResources:
+            - name: jatin_gitrepo2
+            - name: jatin_image
         execution:
           onExecute:
             - echo "This will run on one machine every 5 mins"
-            - sleep 2m
 #       - name: load_pipelines_test2
 #         type: Bash
 # #         configuration:
